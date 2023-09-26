@@ -1,0 +1,54 @@
+{
+    "minimum-stability": "dev",
+    "name": "laravia/heart",
+    "description": "laravia heart",
+    "license": "license",
+    "authors": [
+        {
+            "name": "laravia",
+            "email": "code@laravia.art",
+            "homepage": "https://laravia.art"
+        }
+    ],
+    "homepage": "https://laravia.art",
+    "keywords": [
+        "Laravel",
+        "Laravia",
+        "Heart"
+    ],
+    "require": {
+        "symfony/yaml": "^6.0",
+        "spatie/laravel-backup": "*"
+    },
+    "require-dev": {
+        "laravel/sail": "^1.13"
+    },
+    "autoload": {
+        "psr-4": {
+            "Laravia\\Heart\\App\\": "./app",
+            "Laravia\\Heart\\Database\\": "./database",
+            "Laravia\\Heart\\Database\\Seeders\\": "./database/seeders"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Laravia\\Heart\\App\\": "./app",
+            "Laravia\\Heart\\Database\\": "./database",
+            "Laravia\\Heart\\Database\\Seeders\\": "./database/seeders",
+            "Laravia\\Heart\\Tests\\": "./tests"
+        }
+    },
+    "scripts": {
+        "post-root-package-update": []
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Laravia\\Heart\\App\\Providers\\LaraviaServiceProvider"
+            ],
+            "aliases": {
+                "Laravia": "Laravia\\Heart\\App\\Laravia"
+            }
+        }
+    }
+}
