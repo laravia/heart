@@ -6,9 +6,30 @@ use Illuminate\Support\Facades\File;
 
 class Composer
 {
-
     public array $packages = [];
 
+    function parseIntoArray($key, $repository, $packages)
+    {
+        $packageFolderPath = base_path('vendor/' . $key);
+        if (data_get($repository, 'laravia')) {
+            $name = data_get($repository, 'name');
+            $packages[$name]['name'] = $name;
+            $packages[$name]['package'] = $key;
+            $packages[$name]['path'] = $packageFolderPath;
+            $packages[$name]['config'] = $packageFolderPath . '/config/' . $name . '.php';
+            $packages[$name]['routes']['web'] = [];
+            if (File::exists($packageFolderPath . 'routes/web.php')) {
+                $packages[$name]['routes']['web'] = $packageFolderPath . '/routes/web.php';
+            }
+
+            $dirs = array_filter(glob($packageFolderPath . '/lang/*'), 'is_dir');
+            foreach ($dirs as $dir) {
+                $lang = basename($dir);
+                $packages[$name]['lang'][$lang] = $packageFolderPath . '/lang/' . $lang . '/common.php';
+            }
+        }
+        return $packages;
+    }
     public function parse(): void
     {
         $composerRepositories = file_get_contents(base_path('composer.json'));
@@ -16,26 +37,9 @@ class Composer
         $composerRepositories = data_get($composerRepositories, 'repositories', []);
 
         foreach ($composerRepositories as $key => $repository) {
-            $packageFolderPath = base_path('vendor/' . $key);
-            if (data_get($repository, 'laravia')) {
-                $name = data_get($repository, 'name');
-                $packages[$name]['name'] = $name;
-                $packages[$name]['package'] = $key;
-                $packages[$name]['path'] = $packageFolderPath;
-                $packages[$name]['config'] = $packageFolderPath . '/config/' . $name . '.php';
-                $packages[$name]['routes']['web'] = [];
-                if (File::exists($packageFolderPath . 'routes/web.php')) {
-                    $packages[$name]['routes']['web'] = $packageFolderPath . '/routes/web.php';
-                }
-                // $packages[$name]['lang']['en'] = $packageFolderPath . '/lang/en/common.php';
-                // $packages[$name]['lang']['de'] = $packageFolderPath . '/lang/de/common.php';
-                // $packages[$name]['lang']['es'] = $packageFolderPath . '/lang/es/common.php';
-            }
+            $this->packages = $this->parseIntoArray($key, $repository, $this->packages);
         }
-
-        $this->packages = $packages;
     }
-
 
     public function getPackage($name = ""): array
     {
