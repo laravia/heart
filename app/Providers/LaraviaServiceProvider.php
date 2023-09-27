@@ -31,7 +31,6 @@ class LaraviaServiceProvider extends ServiceProvider
             $this->loadRoutesFrom($path);
         });
 
-
         foreach (Laravia::commands('heart') as $command) {
             $this->commands($command);
         }

@@ -12,44 +12,6 @@ use Laravia\Heart\App\Models\Model;
 class Laravia
 {
 
-    public static function getTransKey($key = "", $externalPackageName = ""): string
-    {
-        $divider = '_';
-        $key = explode($divider, $key);
-        $keyElement = [];
-        foreach ($key as $keyEntry) {
-            if ($keyEntry != $divider) {
-                $keyElement[] = ucfirst($keyEntry);
-            }
-        }
-        $key = implode('', $keyElement);
-
-        $divider = '.';
-        $key = explode($divider, $key);
-        $keyElement = [];
-        foreach ($key as $keyEntry) {
-            if ($keyEntry != $divider) {
-                $keyElement[] = lcfirst($keyEntry);
-            }
-        }
-        $key = implode('.', $keyElement);
-
-        $package = 'laravia';
-        if($externalPackageName) {
-            $package = $externalPackageName;
-        }
-
-        $key = $package.'::' . 'common' . ($key ? '.' . $key : '');
-
-        return $key;
-    }
-
-    public static function trans($key = "", $externalPackageName = ""): string
-    {
-        $key = self::getTransKey($key, $externalPackageName);
-        return trans($key);
-    }
-
     public static function path()
     {
         return new Path;
@@ -63,11 +25,10 @@ class Laravia
     public static function config($key = ''): string|array|null
     {
         $composer = new Composer;
-        $config = $composer->loadArrayFromPackageFileByKey('config');
+        $config = $composer->includeFileFromPackageByKeyAndLoadContentIntoArray('config');
         if ($key) {
             $config = data_get($config, $key);
         }
-
         return $config;
     }
 
@@ -79,24 +40,6 @@ class Laravia
     public static function commands($package = "heart"): array
     {
         return data_get(Laravia::config($package), 'commands', []);
-    }
-
-    public static function dd($var_or_object_or_array, $output = '')
-    {
-        if ($output == 'dd' || empty($output)) {
-            dd($var_or_object_or_array);
-        }
-
-        if ($output == 1) {
-            echo "<pre>";
-            print_r($var_or_object_or_array);
-            echo "</pre>";
-        }
-    }
-
-    public static function form()
-    {
-        return new Form;
     }
 
     public static function uuid(): string
@@ -131,25 +74,6 @@ class Laravia
             }
         }
         return $links;
-    }
-
-
-    public static function getProjectNameFromDomain($url = "")
-    {
-        if (!$url) {
-            $url = request()->getHost();
-        }
-        $urlParts = explode(".", $url);
-
-        if (sizeof($urlParts) == 1) {
-            return $urlParts[0];
-        }
-        if (sizeof($urlParts) == 2) {
-            return $urlParts[0];
-        }
-        if (sizeof($urlParts) > 2) {
-            return $urlParts[1];
-        }
     }
 
     public static function getDomainNameWithoutSuburl($url = "")

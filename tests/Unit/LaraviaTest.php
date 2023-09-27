@@ -31,37 +31,12 @@ class LaraviaTest extends LaraviaTestCase
         $this->assertIsArray(Laravia::commands());
     }
 
-    public function testGetTransKey()
-    {
-        $this->assertIsString(Laravia::getTransKey());
-        $this->assertIsString(Laravia::getTransKey('hello'));
-        $this->assertEquals(Laravia::getTransKey('hello'), 'laravia::common.hello');
-        $this->assertEquals(Laravia::getTransKey('hello','manuel'), 'manuel::common.hello');
-
-        dd(trans());
-        dd(Laravia::trans('placeholderSearch','manuel'));
-    }
-
-    public function testTranslations()
-    {
-        $this->assertIsString(Laravia::trans('hello'));
-    }
-
     /**
      * @dataProvider dataProviderUrls
      * */
     public function testLaraviaFunctionGetDomainNameWithoutSuburl($insert = "", $expects = "")
     {
         $domain = Laravia::getDomainNameWithoutSuburl($insert);
-        $this->assertEquals($domain, $expects);
-    }
-
-    /**
-     * @dataProvider dataProviderUrlsWithoutExtension
-     * */
-    public function testLaraviaFunctionGetProjectNameFromDomain($insert = "", $expects = "")
-    {
-        $domain = Laravia::getProjectNameFromDomain($insert);
         $this->assertEquals($domain, $expects);
     }
 

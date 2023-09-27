@@ -4,6 +4,7 @@ namespace Laravia\Heart\App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Laravia\Heart\App\Laravia;
 
 class Publish extends Command
 {
@@ -14,7 +15,7 @@ class Publish extends Command
 
     public function publishProviders()
     {
-        foreach (\Laravia::config('*.publish') as $provider) {
+        foreach (Laravia::config('*.publish') as $provider) {
             if (is_array($provider)) {
                 foreach ($provider as $value) {
                     $this->line('publishing ' . $value);
