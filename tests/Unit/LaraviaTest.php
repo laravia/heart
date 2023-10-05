@@ -40,7 +40,7 @@ class LaraviaTest extends LaraviaTestCase
         $this->assertEquals($domain, $expects);
     }
 
-    public function dataProviderUrls()
+    public static function dataProviderUrls()
     {
         yield 'default suburl www' => [
             'insert' => 'www.orf.at',
@@ -55,7 +55,7 @@ class LaraviaTest extends LaraviaTestCase
             'expects' => 'localhost',
         ];
     }
-    public function dataProviderUrlsWithoutExtension()
+    public static function dataProviderUrlsWithoutExtension()
     {
         yield 'default suburl www' => [
             'insert' => 'www.orf.at',
