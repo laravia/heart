@@ -1,7 +1,5 @@
 <?php
 
-use Carbon\Carbon;
-
 $config['heart'] = [
     'name' => 'Laravia',
     'version' => '0.2',
@@ -16,10 +14,15 @@ $config['heart'] = [
 
 $config['heart']['commands'] = [
     'Laravia\Heart\App\Console\Commands\Laravia',
+    'Laravia\Heart\App\Console\Commands\Call',
     'Laravia\Heart\App\Console\Commands\Publish',
     'Laravia\Heart\App\Console\Commands\PackageCloneWithSearchAndReplace',
 ];
 
 $config['heart']['publish'] = [
     'Spatie\Backup\BackupServiceProvider',
+];
+
+$config['heart']['call'] = [
+    'jetstream:install livewire',
 ];
