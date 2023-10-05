@@ -2,32 +2,26 @@
 
 namespace Laravia\Heart\Tests\Unit\Classes\Package;
 
-use Laravia\Heart\App\Classes\Package\Package;
 use Laravia\Heart\App\Classes\TestCase;
 
 class PackageTest extends TestCase
 {
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->class = new (Package::class);
-    }
+    public $class='Laravia\Heart\App\Classes\Package\Package';
 
     public function testInitClass()
     {
-        $this->assertClassExist($this->class::class);
+        $this->assertClassExist($this->class);
     }
 
     public function testAll()
     {
-        $this->assertMethodInClassExist($this->class::class, 'all');
+        $this->assertMethodInClassExist($this->class, 'all');
     }
 
     public function testGetByName()
     {
-        $this->assertMethodInClassExist($this->class::class, 'getByName');
-        $this->assertIsArray($this->class->getByName('heart'));
+        $this->assertMethodInClassExist($this->class, 'getByName');
+        $this->assertIsArray((new $this->class())->getByName('heart'));
     }
 
 }
