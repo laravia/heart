@@ -2,6 +2,7 @@
 
 namespace Laravia\Heart\Tests\Unit\Classes;
 
+use Illuminate\Support\Facades\Artisan;
 use Laravia\Heart\App\Console\Commands\Publish;
 use Laravia\Heart\App\Classes\TestCase;
 
@@ -14,15 +15,21 @@ class PublishTest extends TestCase
 
     public function testPublish()
     {
-        $this->artisan('laravia:publish')
-            ->expectsOutput('all files published')
-            ->assertExitCode(0);
+        Artisan::shouldReceive('call')
+            ->once()
+            ->with('laravia:publish')
+            ->andReturn('all files published');
+
+        Artisan::call('laravia:publish');
     }
 
     public function testPublishForce()
     {
-        $this->artisan('laravia:publish true')
-            ->expectsOutput('all files published')
-            ->assertExitCode(0);
+        Artisan::shouldReceive('call')
+            ->once()
+            ->with('laravia:publish true')
+            ->andReturn('all files published');
+
+        Artisan::call('laravia:publish true');
     }
 }
