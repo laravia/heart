@@ -18,10 +18,11 @@
     ],
     "require": {
         "symfony/yaml": "^6.0",
-        "spatie/laravel-backup": "*"
+        "spatie/laravel-backup": "*",
+        "laravel/jetstream":"^4.0"
     },
     "require-dev": {
-        "laravel/sail": "^1.13"
+        "laravel/sail": "^1.18"
     },
     "autoload": {
         "psr-4": {
