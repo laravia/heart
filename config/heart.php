@@ -24,5 +24,6 @@ $config['heart']['publish'] = [
 ];
 
 $config['heart']['call'] = [
-    'jetstream:install livewire',
+    'orchid:install',
+    'orchid:admin admin admin@admin.com password --create',
 ];
