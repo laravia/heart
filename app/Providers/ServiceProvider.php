@@ -2,14 +2,14 @@
 
 namespace Laravia\Heart\App\Providers;
 
+use App\Orchid\PlatformProvider;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Laravia\Heart\App\Laravia;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-class ServiceProvider extends LaravelServiceProvider
+class ServiceProvider extends PlatformProvider
 {
 
     protected $laravia = "laravia";
@@ -43,12 +43,14 @@ class ServiceProvider extends LaravelServiceProvider
         $this->loadSeedsFrom(Laravia::path()->get($this->name) . '/database/seeders');
 
         App::booted(function () {
-            $path = Laravia::path()->get($this->name) . '/routes/web.php';
-            $this->loadRoutesFrom($path);
+            foreach(File::allFiles(Laravia::path()->get($this->name) . '/routes') as $route){
+                $this->loadRoutesFrom($route);
+            }
         });
 
         $this->publishes([
             Laravia::path()->get($this->name) . "/public" => public_path('vendor'),
         ], $this->name);
     }
+
 }
