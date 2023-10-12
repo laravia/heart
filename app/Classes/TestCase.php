@@ -8,13 +8,15 @@ use Tests\TestCase as LaravelTestCase;
 
 class TestCase extends LaravelTestCase
 {
+    public $faker;
 
     public $class;
     protected static $setUpRun = false;
 
-    function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
+        $this->faker = \Faker\Factory::create();
         if (!static::$setUpRun) {
             Artisan::call('migrate:fresh');
             Artisan::call('db:seed');
