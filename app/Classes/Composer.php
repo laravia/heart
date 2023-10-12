@@ -8,27 +8,33 @@ class Composer
 {
     public array $packages = [];
 
-    function parseIntoArray($key, $repository, $packages)
+    public function parseIntoArray($key, $repository)
     {
         $packageFolderPath = base_path('vendor/' . $key);
         if (data_get($repository, 'laravia')) {
             $name = data_get($repository, 'name');
-            $packages[$name]['name'] = $name;
-            $packages[$name]['package'] = $key;
-            $packages[$name]['path'] = $packageFolderPath;
-            $packages[$name]['config'] = $packageFolderPath . '/config/' . $name . '.php';
-            $packages[$name]['routes']['web'] = [];
-            if (File::exists($packageFolderPath . 'routes/web.php')) {
-                $packages[$name]['routes']['web'] = $packageFolderPath . '/routes/web.php';
+            $package['name'] = $name;
+            $package['package'] = $key;
+            $package['path'] = $packageFolderPath;
+            $package['config'] = $packageFolderPath . '/config/' . $name . '.php';
+            $package['routes']['backend'] = [];
+
+            $routesFolder = $packageFolderPath . '/routes';
+            if(File::exists($routesFolder)){
+                foreach(File::allFiles($packageFolderPath . '/routes') as $route){
+                    $key = $route->getFilenameWithoutExtension();
+                    $filename = $route->getFilename();
+                    $package['routes'][$key] = $packageFolderPath . '/routes/'.$filename;
+                }
             }
 
             $dirs = array_filter(glob($packageFolderPath . '/lang/*'), 'is_dir');
             foreach ($dirs as $dir) {
                 $lang = basename($dir);
-                $packages[$name]['lang'][$lang] = $packageFolderPath . '/lang/' . $lang . '/common.php';
+                $package['lang'][$lang] = $packageFolderPath . '/lang/' . $lang . '/common.php';
             }
         }
-        return $packages;
+        return $package;
     }
     public function parse(): void
     {
@@ -36,8 +42,8 @@ class Composer
         $composerRepositories = json_decode($composerRepositories, true);
         $composerRepositories = data_get($composerRepositories, 'repositories', []);
 
-        foreach ($composerRepositories as $key => $repository) {
-            $this->packages = $this->parseIntoArray($key, $repository, $this->packages);
+        foreach($composerRepositories as $key => $repoDetailsAsArray){
+            $this->packages[str_replace('laravia/','',$key)] = $this->parseIntoArray($key,$repoDetailsAsArray);
         }
     }
 
