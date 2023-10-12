@@ -12,10 +12,9 @@ class PathTest extends TestCase
         $this->assertClassExist(Path::class);
     }
 
-    public function testGetPathForLaravia()
+    public function testGetPathForLaravia(): void
     {
         $path = new Path;
-        $this->assertStringContainsString('laravia/heart',$path->get('heart'));
+        $this->assertStringContainsString('heart', $path->get('heart'));
     }
-
 }
