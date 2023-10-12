@@ -1,5 +1,7 @@
 <?php
 
+use Orchid\Screen\Actions\Menu;
+
 $config['heart'] = [
     'name' => 'Laravia',
     'version' => '0.2',
@@ -10,6 +12,15 @@ $config['heart'] = [
     'dateTimeFormat' => 'd.m.Y H:i:s',
     'emailRecipient' => env('MAIL_DEFAULT_RECIPIENT'),
     'emailSender' => env('MAIL_FROM_ADDRESS')
+];
+
+$config['heart']['links'] = [
+    [
+        'name' => __('Dashboard'),
+        'icon' => 'bs.heart',
+        'title' => __('System'),
+        'route' => 'laravia.heart',
+    ]
 ];
 
 $config['heart']['commands'] = [
