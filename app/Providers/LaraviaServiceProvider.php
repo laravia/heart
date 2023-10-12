@@ -60,10 +60,6 @@ class LaraviaServiceProvider extends PlatformProvider
         $this->defaultBootMethod();
 
         $this->overwriteOrchidSettings();
-
-        foreach (Laravia::commands('heart') as $command) {
-            $this->commands($command);
-        }
     }
 
     public function overwriteOrchidSettings(): void

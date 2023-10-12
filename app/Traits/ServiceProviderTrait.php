@@ -10,7 +10,6 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 trait ServiceProviderTrait
 {
     protected $laravia = "laravia";
-    protected $name = "heart";
 
     public function getPackagePrefix()
     {
@@ -58,5 +57,9 @@ trait ServiceProviderTrait
         $this->publishes([
             Laravia::path()->get($this->name) . "/public" => public_path('vendor'),
         ], $this->name);
+
+        foreach (Laravia::commands($this->name) as $command) {
+            $this->commands($command);
+        }
     }
 }
