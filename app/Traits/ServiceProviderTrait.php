@@ -1,17 +1,14 @@
 <?php
 
-namespace Laravia\Heart\App\Providers;
-
-use App\Orchid\PlatformProvider;
+namespace Laravia\Heart\App\Traits;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Laravia\Heart\App\Laravia;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-class ServiceProvider extends PlatformProvider
+trait ServiceProviderTrait
 {
-
     protected $laravia = "laravia";
     protected $name = "heart";
 
@@ -39,12 +36,22 @@ class ServiceProvider extends PlatformProvider
     protected function defaultBootMethod()
     {
         $this->loadViewsFrom(Laravia::path()->get($this->name) . '/resources/views', $this->getPackagePrefix());
-        $this->loadMigrationsFrom(Laravia::path()->get($this->name) . '/database/migrations');
-        $this->loadSeedsFrom(Laravia::path()->get($this->name) . '/database/seeders');
+
+        $migrationsPath = Laravia::path()->get($this->name) . '/database/migrations';
+        if (File::exists($migrationsPath)) {
+            $this->loadMigrationsFrom($migrationsPath);
+        }
+        $seedersPath = Laravia::path()->get($this->name) . '/database/seeders';
+        if (File::exists($seedersPath)) {
+            $this->loadSeedsFrom($seedersPath);
+        }
 
         App::booted(function () {
-            foreach(File::allFiles(Laravia::path()->get($this->name) . '/routes') as $route){
-                $this->loadRoutesFrom($route);
+            $routesPath = Laravia::path()->get($this->name) . '/routes';
+            if (File::exists($routesPath)) {
+                foreach (File::allFiles($routesPath) as $route) {
+                    $this->loadRoutesFrom($route);
+                }
             }
         });
 
@@ -52,5 +59,4 @@ class ServiceProvider extends PlatformProvider
             Laravia::path()->get($this->name) . "/public" => public_path('vendor'),
         ], $this->name);
     }
-
 }
