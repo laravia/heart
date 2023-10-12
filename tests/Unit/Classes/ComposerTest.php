@@ -27,13 +27,6 @@ class ComposerTest extends TestCase
         $this->assertGreaterThanOrEqual(1, sizeof($composer->getFilesByKey('config')));
     }
 
-    public function testGetPackage()
-    {
-        $composer = new Composer();
-        $composer->parse();
-        $this->assertGreaterThanOrEqual(1, sizeof($composer->getFilesByKey('config')));
-    }
-
     public function testIncludeFileFromPackageByKeyAndLoadContentIntoArray()
     {
         $composer = new Composer();
