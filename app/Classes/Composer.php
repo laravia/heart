@@ -20,11 +20,11 @@ class Composer
             $package['routes']['backend'] = [];
 
             $routesFolder = $packageFolderPath . '/routes';
-            if(File::exists($routesFolder)){
-                foreach(File::allFiles($packageFolderPath . '/routes') as $route){
+            if (File::exists($routesFolder)) {
+                foreach (File::allFiles($packageFolderPath . '/routes') as $route) {
                     $key = $route->getFilenameWithoutExtension();
                     $filename = $route->getFilename();
-                    $package['routes'][$key] = $packageFolderPath . '/routes/'.$filename;
+                    $package['routes'][$key] = $packageFolderPath . '/routes/' . $filename;
                 }
             }
 
@@ -42,8 +42,8 @@ class Composer
         $composerRepositories = json_decode($composerRepositories, true);
         $composerRepositories = data_get($composerRepositories, 'repositories', []);
 
-        foreach($composerRepositories as $key => $repoDetailsAsArray){
-            $this->packages[str_replace('laravia/','',$key)] = $this->parseIntoArray($key,$repoDetailsAsArray);
+        foreach ($composerRepositories as $key => $repoDetailsAsArray) {
+            $this->packages[str_replace('laravia/', '', $key)] = $this->parseIntoArray($key, $repoDetailsAsArray);
         }
     }
 
@@ -72,13 +72,16 @@ class Composer
     {
         $fileContentAsArray = [];
         $config = [];
-        foreach ($this->getFilesByKey($key) as $file) {
-            if (File::exists($file)) {
-                include $file;
-                //this file requires a config array
-                //after including once, the config array is available
-                if (!empty($config)) {
-                    $fileContentAsArray[key($config)] = $config[key($config)];
+        $log = [];
+        $files = $this->getFilesByKey($key);
+        foreach ($files as $key=>$file) {
+            if (!in_array($file, $log)) {
+                $log[] = $file;
+                if (File::exists($file)) {
+                    include $file;
+                    //this file requires a config array
+                    //after including once, the config array is available
+                    $fileContentAsArray[$key] = $config[$key];
                 }
             }
         }
