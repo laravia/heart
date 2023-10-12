@@ -15,7 +15,7 @@ class Path
         $this->packages = $composer->packages;
     }
 
-    function get($name)
+    public function get($name)
     {
         return data_get($this->packages, $name . '.path');
     }
