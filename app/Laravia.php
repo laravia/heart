@@ -5,7 +5,6 @@ namespace Laravia\Heart\App;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Laravia\Heart\App\Classes\Composer;
-use Laravia\Heart\App\Classes\Form;
 use Laravia\Heart\App\Classes\Path;
 use Laravia\Heart\App\Models\Model;
 
