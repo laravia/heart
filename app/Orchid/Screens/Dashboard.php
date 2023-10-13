@@ -2,19 +2,25 @@
 
 namespace Laravia\Heart\App\Orchid\Screens;
 
-use App\Models\User;
+use Illuminate\Http\Request;
+use Laravia\Heart\App\Laravia;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 
 class Dashboard extends Screen
 {
+
+    public function __invoke(Request $request, ...$arguments)
+    {
+        return $this->handle($request, ...$arguments);
+    }
+
     public function query(): iterable
     {
         return [
-            'metrics' => [
-                'users'    => ['value' => User::count()],
-            ],
+            'metrics' => Laravia::dashboardMetrics(),
         ];
+
     }
 
     public function name(): ?string
@@ -34,11 +40,15 @@ class Dashboard extends Screen
 
     public function layout(): iterable
     {
+
+        $metricsArray = [];
+        foreach(Laravia::dashboardMetrics() as $key=>$metrics){
+            $metricsArray[data_get($metrics, 'title')] = 'metrics.'.$key;
+        }
+
         return [
 
-            Layout::metrics([
-                'Users'    => 'metrics.users',
-            ]),
+            Layout::metrics($metricsArray),
 
         ];
     }
