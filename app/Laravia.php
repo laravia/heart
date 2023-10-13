@@ -105,9 +105,17 @@ class Laravia
         });
     }
 
-    public static function isInitialCall()
+    public static function isInitialBackendCall()
     {
         return  preg_match('/login/', request()->headers->get('referer')) &&
-            preg_match('/dashboard/', request()->url());
+            preg_match('/\\' . config('platform.prefix') . '\/dashboard/', request()->url());
+    }
+
+    public static function isInitialCall($what)
+    {
+        if ($what == "backend") {
+            return self::isInitialBackendCall();
+        }
+        return false;
     }
 }
