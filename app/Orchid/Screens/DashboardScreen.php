@@ -7,7 +7,7 @@ use Laravia\Heart\App\Laravia;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 
-class Dashboard extends Screen
+class DashboardScreen extends Screen
 {
 
     public function __invoke(Request $request, ...$arguments)
