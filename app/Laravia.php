@@ -104,4 +104,10 @@ class Laravia
                 ->from(Laravia::config('heart.emailSender'));
         });
     }
+
+    public static function isInitialCall()
+    {
+        return  preg_match('/login/', request()->headers->get('referer')) &&
+            preg_match('/dashboard/', request()->url());
+    }
 }

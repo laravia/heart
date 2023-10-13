@@ -84,4 +84,13 @@ class LaraviaTest extends LaraviaTestCase
     {
         $this->assertIsArray(Laravia::links());
     }
+
+    public function testIsInitialCall()
+    {
+        $this->assertFalse(Laravia::isInitialCall());
+        $this->call('GET', config('platform.prefix') . '/dashboard', [], [], [], ['HTTP_REFERER' => 'login']);
+        $this->assertTrue(Laravia::isInitialCall());
+        $this->call('GET', config('platform.prefix') . '/dashboard', [], [], [], ['HTTP_REFERER' => 'test']);
+        $this->assertFalse(Laravia::isInitialCall());
+    }
 }
