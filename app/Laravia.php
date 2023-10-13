@@ -36,11 +36,6 @@ class Laravia
         return Laravia::config('heart.name') . " " . Laravia::config('heart.version');
     }
 
-    public static function commands($package = "heart"): array
-    {
-        return data_get(Laravia::config($package), 'commands', []);
-    }
-
     public static function uuid(): string
     {
         $data = random_bytes(16);
@@ -50,7 +45,6 @@ class Laravia
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
 
-
     public static function getOrderdConfig()
     {
         return collect(data_get(Laravia::config(), '*'))
@@ -58,21 +52,39 @@ class Laravia
             ->toArray();
     }
 
-
     public static function links(): array
     {
-        $links = [];
-        foreach (data_get(self::getOrderdConfig(), '*.links') as $linkData) {
+        return self::getDataFromConfigByKey('links');
+    }
 
-            if ($linkData == null) {
+    public static function commands(): array
+    {
+        return self::getDataFromConfigByKey('commands');
+    }
+
+    public static function dashboardMetrics(): array
+    {
+        return self::getDataFromConfigByKey('dashboard.metrics');
+    }
+
+    public static function getDataFromConfigByKey($key): array
+    {
+        $array = [];
+        foreach (data_get(self::getOrderdConfig(), '*.'.$key) as $data) {
+
+            if ($data == null) {
                 continue;
             }
 
-            foreach ($linkData as $link) {
-                $links[] = $link;
+            foreach ($data as $key => $item) {
+                if(is_string($key)){
+                    $array[$key] = $item;
+                }else{
+                    $array[] = $item;
+                }
             }
         }
-        return $links;
+        return collect($array)->sortBy('sort')->toArray();
     }
 
     public static function getDomainNameWithoutSuburl($url = "")
