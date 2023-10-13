@@ -1,6 +1,6 @@
 <?php
 
-use Orchid\Screen\Actions\Menu;
+use App\Models\User;
 
 $config['heart'] = [
     'name' => 'Laravia',
@@ -20,6 +20,7 @@ $config['heart']['links'] = [
         'icon' => 'bs.heart',
         'title' => __('System'),
         'route' => 'laravia.heart',
+        'sort' => 1
     ]
 ];
 
@@ -28,6 +29,11 @@ $config['heart']['commands'] = [
     'Laravia\Heart\App\Console\Commands\Call',
     'Laravia\Heart\App\Console\Commands\Publish',
     'Laravia\Heart\App\Console\Commands\PackageCloneWithSearchAndReplace',
+];
+
+$config['heart']['dashboard']['metrics'] = [
+    'laravia' => ['sort' => 1, 'value' => $config['heart']['name'] . " " . $config['heart']['version'], 'title' => 'Laravia Version'],
+    'users' => ['sort' => 101, 'value' => User::count(), 'title' => 'Users Count'],
 ];
 
 $config['heart']['publish'] = [
