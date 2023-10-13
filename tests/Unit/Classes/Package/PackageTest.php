@@ -15,12 +15,12 @@ class PackageTest extends TestCase
 
     public function testAll()
     {
-        $this->assertMethodInClassExist($this->class, 'all');
+        $this->assertMethodInClassExists('all',$this->class);
     }
 
     public function testGetByName()
     {
-        $this->assertMethodInClassExist($this->class, 'getByName');
+        $this->assertMethodInClassExists('getByName',$this->class);
         $this->assertIsArray((new $this->class())->getByName('heart'));
     }
 

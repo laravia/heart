@@ -29,7 +29,7 @@ class TestCase extends LaravelTestCase
         $this->assertTrue(class_exists($classNameWithNamespace));
     }
 
-    protected function assertMethodInClassExist(string $classNameWithNamespace, string $methodName)
+    protected function assertMethodInClassExists(string $methodName, string $classNameWithNamespace)
     {
         $reflectionClass = new ReflectionClass($classNameWithNamespace);
         $this->assertTrue($reflectionClass->hasMethod($methodName));

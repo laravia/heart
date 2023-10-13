@@ -16,12 +16,12 @@ class CallTest extends TestCase
 
     public function testHandle()
     {
-        $this->assertMethodInClassExist(Call::class, 'handle');
+        $this->assertMethodInClassExists('handle', Call::class);
     }
 
     public function testInstallMethodExists()
     {
-        $this->assertMethodInClassExist(Call::class, 'install');
+        $this->assertMethodInClassExists('install', Call::class);
     }
 
     public function testInstall()
