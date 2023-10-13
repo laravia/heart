@@ -43,4 +43,11 @@ class ComposerTest extends TestCase
         $this->assertIsArray($composer->getValueFromConfigArrayByKey('heart'));
         $this->assertIsString($composer->getValueFromConfigArrayByKey('heart.name'));
     }
+
+    public function testGetAllPackageNames()
+    {
+        $composer = new Composer();
+        $composer->parse();
+        $this->assertIsArray($composer->getAllPackageNames());
+    }
 }

@@ -130,4 +130,10 @@ class Laravia
         }
         return false;
     }
+
+    public static function getAllPackageNames()
+    {
+        $composer = new Composer;
+        return $composer->getAllPackageNames();
+    }
 }

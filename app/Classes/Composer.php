@@ -58,6 +58,16 @@ class Composer
         return $this->packages;
     }
 
+    public function getAllPackageNames()
+    {
+        $this->parse();
+        $packages = [];
+        foreach(array_keys($this->packages) as $package) {
+            $packages[$package] = $package;
+        }
+        return $packages;
+    }
+
     public function getFilesByKey($key): array
     {
         $this->parse();

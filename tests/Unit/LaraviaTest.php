@@ -113,4 +113,9 @@ class LaraviaTest extends LaraviaTestCase
         $this->call('GET', config('platform.prefix') . '/dashboard', [], [], [], ['HTTP_REFERER' => 'test']);
         $this->assertFalse(Laravia::isInitialCall('backend'));
     }
+
+    public function testGetAllPackageNames()
+    {
+        $this->assertIsArray(Laravia::getAllPackageNames());
+    }
 }
