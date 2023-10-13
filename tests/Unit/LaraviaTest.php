@@ -85,12 +85,32 @@ class LaraviaTest extends LaraviaTestCase
         $this->assertIsArray(Laravia::links());
     }
 
+    public function testDashboardMetrics()
+    {
+        $this->assertIsArray(Laravia::dashboardMetrics());
+    }
+
+    public function testUuid()
+    {
+        $this->assertIsString(Laravia::uuid());
+    }
+
+    public function testInfo()
+    {
+        $this->assertIsString(Laravia::info());
+    }
+
+    public function testGetAllDataFromConfigByKey($key="config")
+    {
+        $this->assertIsArray(Laravia::getDataFromConfigByKey($key));
+    }
+
     public function testIsInitialCall()
     {
-        $this->assertFalse(Laravia::isInitialCall());
+        $this->assertFalse(Laravia::isInitialCall('backend'));
         $this->call('GET', config('platform.prefix') . '/dashboard', [], [], [], ['HTTP_REFERER' => 'login']);
-        $this->assertTrue(Laravia::isInitialCall());
+        $this->assertTrue(Laravia::isInitialCall('backend'));
         $this->call('GET', config('platform.prefix') . '/dashboard', [], [], [], ['HTTP_REFERER' => 'test']);
-        $this->assertFalse(Laravia::isInitialCall());
+        $this->assertFalse(Laravia::isInitialCall('backend'));
     }
 }
