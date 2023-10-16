@@ -18,7 +18,7 @@ $config['heart']['links'] = [
     [
         'name' => __('Dashboard'),
         'icon' => 'bs.heart',
-        'title' => __('System'),
+        'title' => __('Heart'),
         'route' => 'laravia.heart',
         'sort' => 1
     ]
@@ -33,7 +33,7 @@ $config['heart']['commands'] = [
 
 $config['heart']['dashboard']['metrics'] = [
     'laravia' => ['sort' => 1, 'value' => $config['heart']['name'] . " " . $config['heart']['version'], 'title' => 'Laravia Version'],
-    'users' => ['sort' => 101, 'value' => User::count(), 'title' => 'Users Count'],
+    'users' => ['sort' => 20, 'value' => User::count(), 'title' => 'Users Count'],
 ];
 
 $config['heart']['publish'] = [
