@@ -36,7 +36,6 @@ url =  git@github.com:laravia/counter.git
 mkdir packages/laravia/counter
 </pre>
 
-
 ## step 1.4 | create and clone your new repository (example: github)
 <pre>
 git clone git@github.com:laravia/posting.git packages/laravia/posting
@@ -50,6 +49,11 @@ sail art laravia:package:clone packages/laravia/heart counter lookup
 ## 1.6 | copy from tmp to packages
 <pre>
 cp -r storage/framework/tmp/packages/laravia/counter packages/laravia/
+</pre>
+
+## 1.7 | update if needed the package composer
+<pre>
+nano packages/laravia/counter/composer.json
 </pre>
 
 ## 1.8 | run composer
