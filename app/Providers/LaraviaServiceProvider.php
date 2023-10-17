@@ -59,7 +59,14 @@ class LaraviaServiceProvider extends PlatformProvider
         parent::boot($dashboard);
         $this->defaultBootMethod();
 
+
+        $this->addLaraConfigToLaravelConfig();
         $this->overwriteOrchidSettings();
+    }
+
+    public function addLaraConfigToLaravelConfig(): void
+    {
+        $this->app['config']->set('laravia', Laravia::config());
     }
 
     public function overwriteOrchidSettings(): void
