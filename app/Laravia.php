@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use Laravia\Heart\App\Classes\Composer;
 use Laravia\Heart\App\Classes\Path;
 use Laravia\Heart\App\Models\Model;
+use Orchid\Platform\Models\User;
+use Spatie\Tags\Tag;
 
 class Laravia
 {
@@ -70,16 +72,16 @@ class Laravia
     public static function getDataFromConfigByKey($key): array
     {
         $array = [];
-        foreach (data_get(self::getOrderdConfig(), '*.'.$key) as $data) {
+        foreach (data_get(self::getOrderdConfig(), '*.' . $key) as $data) {
 
             if ($data == null) {
                 continue;
             }
 
             foreach ($data as $key => $item) {
-                if(is_string($key)){
+                if (is_string($key)) {
                     $array[$key] = $item;
-                }else{
+                } else {
                     $array[] = $item;
                 }
             }
@@ -135,5 +137,34 @@ class Laravia
     {
         $composer = new Composer;
         return $composer->getAllPackageNames();
+    }
+
+    public static function isNewEntry(): bool
+    {
+        return !request()->get('id') ? true : false;
+    }
+
+    public static function getSpatieTagsFromOrchidRequest($tags = [])
+    {
+        $tags = collect($tags)->map(function ($tag) {
+            if (preg_match('/^\d+$/', $tag)) {
+                $tag = Tag::where('id', $tag)->first()->name;
+            }
+            return $tag;
+        })->toArray();
+        return $tags;
+    }
+
+    public static function getDashboardMetrics($what)
+    {
+        try {
+            switch ($what) {
+                case 'users':
+                    return User::count();
+                    break;
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }
