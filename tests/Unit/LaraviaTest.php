@@ -4,6 +4,7 @@ namespace Laravia\Heart\Tests\Unit;
 
 use Laravia\Heart\App\Classes\TestCase as LaraviaTestCase;
 use Laravia\Heart\App\Laravia;
+use Spatie\Tags\Tag;
 
 class LaraviaTest extends LaraviaTestCase
 {
@@ -100,7 +101,7 @@ class LaraviaTest extends LaraviaTestCase
         $this->assertIsString(Laravia::info());
     }
 
-    public function testGetAllDataFromConfigByKey($key="config")
+    public function testGetAllDataFromConfigByKey($key = "config")
     {
         $this->assertIsArray(Laravia::getDataFromConfigByKey($key));
     }
@@ -117,5 +118,36 @@ class LaraviaTest extends LaraviaTestCase
     public function testGetAllPackageNames()
     {
         $this->assertIsArray(Laravia::getAllPackageNames());
+    }
+
+    public function testIsNewEntry()
+    {
+        $this->assertTrue(Laravia::isNewEntry());
+        request()->merge(['id' => 1]);
+        $this->assertFalse(Laravia::isNewEntry());
+    }
+
+    public function testGetTagsFromOrchidTagAsArray()
+    {
+        $this->assertIsArray(Laravia::getSpatieTagsFromOrchidRequest(['test1', 'test2']));
+    }
+
+    public function testGetTagsFromOrchidTagAsArrayWithNewAndOld()
+    {
+        $tagText[] = 'test1';
+        $tagText[] = 'test2';
+        $tagText[] = 'test3';
+        $tagText[] = 'test4';
+        $tags[] = Tag::findOrCreate($tagText[0])->id;
+        $tags[] = Tag::findOrCreate($tagText[1])->id;
+        $tags[] = $tagText[2];
+        $tags[] = $tagText[3];
+        $tags = Laravia::getSpatieTagsFromOrchidRequest($tags);
+
+        $this->assertNotContains([1, 2], $tags);
+        $this->assertContains($tagText[0], $tags);
+        $this->assertContains($tagText[1], $tags);
+        $this->assertContains($tagText[2], $tags);
+        $this->assertContains($tagText[3], $tags);
     }
 }
