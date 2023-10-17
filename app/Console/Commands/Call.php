@@ -17,8 +17,8 @@ class Call extends Command
         foreach (Laravia::config('*.call') as $install) {
             if (is_array($install)) {
                 foreach ($install as $installcode) {
-                    $this->line('Artisan::call(' . $installcode.')');
-                    $this->call($installcode);
+                    $this->line('system("' . $installcode.'")');
+                    system($installcode);
                 }
             }
         }
