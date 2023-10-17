@@ -19,9 +19,10 @@
     "require": {
         "symfony/yaml": "^6.0",
         "spatie/laravel-backup": "*",
+        "spatie/laravel-tags": "^4.0",
         "orchid/platform":"^14.14"
-
     },
+
     "require-dev": {
         "laravel/sail": "^1.18"
     },
