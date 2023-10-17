@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use Laravia\Heart\App\Laravia;
 
 $config['heart'] = [
     'name' => 'Laravia',
@@ -33,14 +33,15 @@ $config['heart']['commands'] = [
 
 $config['heart']['dashboard']['metrics'] = [
     'laravia' => ['sort' => 1, 'value' => $config['heart']['name'] . " " . $config['heart']['version'], 'title' => 'Laravia Version'],
-    'users' => ['sort' => 20, 'value' => User::count(), 'title' => 'Users Count'],
+    'users' => ['sort' => 20, 'value' => Laravia::getDashboardMetrics('users'), 'title' => 'Users Count'],
 ];
 
 $config['heart']['publish'] = [
-    'Spatie\Backup\BackupServiceProvider',
 ];
 
 $config['heart']['call'] = [
-    'orchid:install',
-    'orchid:admin admin admin@admin.com password --create',
+    'php artisan vendor:publish --provider="Spatie\Tags\TagsServiceProvider" --tag="tags-migrations"',
+    'php artisan vendor:publish --provider="Spatie\Backup\BackupServiceProvider"',
+    'php artisan orchid:install',
+    'php artisan orchid:admin admin admin@admin.com password --create',
 ];
