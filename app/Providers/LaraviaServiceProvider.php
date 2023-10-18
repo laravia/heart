@@ -18,16 +18,25 @@ class LaraviaServiceProvider extends PlatformProvider
     {
         $countLinks = count(Laravia::links());
         $i = 1;
-        foreach (Laravia::links() as $link) {
+        foreach (Laravia::links() as $linkData) {
 
-            $link = Menu::make(data_get($link, 'name'))
-                ->icon(data_get($link, 'icon'))
-                ->title(data_get($link, 'title'))
-                ->route(data_get($link, 'route'))
-                ->active(data_get($link, 'active'));
+            $link = Menu::make(data_get($linkData, 'name'))
+                ->icon(data_get($linkData, 'icon'))
+                ->title(data_get($linkData, 'title'))
+                ->active(data_get($linkData, 'active'));
+
+            if ($route = data_get($linkData, 'route')) {
+                $link->route($route);
+            }
+
+            if ($url = data_get($linkData, 'url')) {
+                $link->url($url);
+            }
+
             if ($i == $countLinks) {
                 $link->divider();
             }
+
             $this->links[] = $link;
             $i++;
         }
@@ -58,7 +67,6 @@ class LaraviaServiceProvider extends PlatformProvider
     {
         parent::boot($dashboard);
         $this->defaultBootMethod();
-
 
         $this->addLaraConfigToLaravelConfig();
         $this->overwriteOrchidSettings();
