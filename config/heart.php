@@ -40,7 +40,6 @@ $config['heart']['publish'] = [
 ];
 
 $config['heart']['call'] = [
-    'php artisan vendor:publish --provider="Spatie\Tags\TagsServiceProvider" --tag="tags-migrations"',
     'php artisan vendor:publish --provider="Spatie\Backup\BackupServiceProvider"',
     'php artisan orchid:install',
     'php artisan orchid:admin admin admin@admin.com password --create',
