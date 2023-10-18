@@ -144,17 +144,6 @@ class Laravia
         return !request()->get('id') ? true : false;
     }
 
-    public static function getSpatieTagsFromOrchidRequest($tags = [])
-    {
-        $tags = collect($tags)->map(function ($tag) {
-            if (preg_match('/^\d+$/', $tag)) {
-                $tag = Tag::where('id', $tag)->first()->name;
-            }
-            return $tag;
-        })->toArray();
-        return $tags;
-    }
-
     public static function getDashboardMetrics($what)
     {
         try {

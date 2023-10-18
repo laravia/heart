@@ -127,27 +127,4 @@ class LaraviaTest extends LaraviaTestCase
         $this->assertFalse(Laravia::isNewEntry());
     }
 
-    public function testGetTagsFromOrchidTagAsArray()
-    {
-        $this->assertIsArray(Laravia::getSpatieTagsFromOrchidRequest(['test1', 'test2']));
-    }
-
-    public function testGetTagsFromOrchidTagAsArrayWithNewAndOld()
-    {
-        $tagText[] = 'test1';
-        $tagText[] = 'test2';
-        $tagText[] = 'test3';
-        $tagText[] = 'test4';
-        $tags[] = Tag::findOrCreate($tagText[0])->id;
-        $tags[] = Tag::findOrCreate($tagText[1])->id;
-        $tags[] = $tagText[2];
-        $tags[] = $tagText[3];
-        $tags = Laravia::getSpatieTagsFromOrchidRequest($tags);
-
-        $this->assertNotContains([1, 2], $tags);
-        $this->assertContains($tagText[0], $tags);
-        $this->assertContains($tagText[1], $tags);
-        $this->assertContains($tagText[2], $tags);
-        $this->assertContains($tagText[3], $tags);
-    }
 }
