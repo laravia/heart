@@ -23,7 +23,7 @@ add package to root/composer.json
 }
 </pre>
 
-## step 1.2 add package to composer 2 (only for local development)
+## step 1.2 add package to gitmodules 2 (only for local development)
 add package to root/.gitmodules (bottom of file)
 <pre>
 [submodule "packages/laravia/counter"]
@@ -38,27 +38,23 @@ mkdir packages/laravia/counter
 
 ## step 1.4 | create and clone your new repository (example: github)
 <pre>
-git clone git@github.com:laravia/posting.git packages/laravia/posting
+git clone git@github.com:laravia/counter.git packages/laravia/counter
 </pre>
 
-## 1.5 | clone a existing packages (example heart) (only for local development)
+## 1.5 | clone an existing packages (example heart) (only for local development)
+> package, search, replace, destination
 <pre>
-sail art laravia:package:clone packages/laravia/heart counter lookup
+sail art laravia:package:clone packages/laravia/heart heart counter packages/laravia/counter
 </pre>
 
-## 1.6 | copy from tmp to packages
-<pre>
-cp -r storage/framework/tmp/packages/laravia/counter packages/laravia/
-</pre>
-
-## 1.7 | update if needed the package composer
+## 1.6 | update if needed the package composer
 <pre>
 nano packages/laravia/counter/composer.json
 </pre>
 
-## 1.8 | run composer
+## 1.7 | run composer
 <pre>
 sail composer update
 </pre>
 
-## 1.9 | happy coding
+## 1.8 | happy coding
