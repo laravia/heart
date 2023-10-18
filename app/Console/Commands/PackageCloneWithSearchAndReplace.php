@@ -14,6 +14,7 @@ class PackageCloneWithSearchAndReplace extends Command
 
     protected $description = 'clone a package with search and replace. required: inputfolder, search value and replace value ';
 
+    public array $removeFilesOrFolderAfterClone = ['.git'];
     protected string $search;
     protected string $replace;
     protected string $relativeInputFolder;
@@ -26,7 +27,7 @@ class PackageCloneWithSearchAndReplace extends Command
     {
         $this->setParameters();
 
-        $this->createTempFolderIfNotExists();
+        $this->createTempFolderIfNotExists($this->storagePath);
 
         $this->checkIfInputFolderExists();
 
@@ -36,13 +37,17 @@ class PackageCloneWithSearchAndReplace extends Command
 
         $this->setArrayWithAllFilesFromOutputFolder();
 
+        $this->removeFilesOrFolderAfterClone();
+
         $this->renameFolder();
 
         $this->renameFiles();
 
         $this->rewriteFiles();
 
-        $this->line(class_basename($this) . ' = done! all cloned into: '.$this->outputFolder);
+        $this->copyAndPasteFolderToOutputFolder();
+
+        $this->terminalOutput();
     }
 
     protected function setParameters()
@@ -52,14 +57,14 @@ class PackageCloneWithSearchAndReplace extends Command
         $this->storagePath = storage_path('framework/tmp/');
         $this->relativeInputFolder = $this->argument('inputFolder');
         $this->inputFolder = base_path($this->relativeInputFolder);
-        $this->outputFolder = $this->argument('outputFolder') ?: $this->storagePath . $this->relativeInputFolder;
+        $this->outputFolder = $this->storagePath . $this->relativeInputFolder;
     }
 
-    protected function createTempFolderIfNotExists()
+    protected function createTempFolderIfNotExists($path)
     {
-        if (!File::exists($this->storagePath)) {
-            if (!File::makeDirectory($this->storagePath)) {
-                $this->abortWithErrorMessage('temp folder can\t be created');
+        if (!File::exists($path)) {
+            if (!File::makeDirectory($path)) {
+                $this->abortWithErrorMessage('temp folder ' . $path . ' can\t be created');
             }
         }
         return true;
@@ -99,6 +104,16 @@ class PackageCloneWithSearchAndReplace extends Command
         $this->allFilesFromOutputFolder = File::allFiles($this->outputFolder);
     }
 
+    protected function removeFilesOrFolderAfterClone()
+    {
+        foreach ($this->removeFilesOrFolderAfterClone as $fileOrFolder) {
+            if (File::exists($this->outputFolder . '/' . $fileOrFolder)) {
+                File::deleteDirectory($this->outputFolder . '/' . $fileOrFolder);
+            }
+        }
+        return true;
+    }
+
     protected function renameFolder()
     {
         $originalFolderName = $this->outputFolder;
@@ -132,6 +147,28 @@ class PackageCloneWithSearchAndReplace extends Command
             $fileContent = str_replace($this->search, $this->replace, $fileContent);
             $fileContent = str_replace(strtoupper($this->search), strtoupper($this->replace), $fileContent);
             File::put($file, $fileContent);
+        }
+    }
+
+    protected function copyAndPasteFolderToOutputFolder()
+    {
+        if ($this->argument('outputFolder')) {
+            if (!File::copyDirectory($this->outputFolder, $this->argument('outputFolder'))) {
+                $this->abortWithErrorMessage('folder can\'t be copied');
+            } else {
+                File::deleteDirectory($this->outputFolder);
+            }
+        }
+        return true;
+    }
+
+    protected function terminalOutput()
+    {
+        $message = class_basename($this) . ' = done! all cloned into: ';
+        if ($folder = $this->argument('outputFolder')) {
+            $this->line($message . $folder);
+        } else {
+            $this->line($message . $this->outputFolder);
         }
     }
 }
