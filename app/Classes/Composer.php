@@ -43,7 +43,7 @@ class Composer
         $composerRepositories = data_get($composerRepositories, 'repositories', []);
 
         foreach ($composerRepositories as $key => $repoDetailsAsArray) {
-            $this->packages[str_replace('laravia/', '', $key)] = $this->parseIntoArray($key, $repoDetailsAsArray);
+            $this->packages[$this->removePackageOwner($key)] = $this->parseIntoArray($key, $repoDetailsAsArray);
         }
     }
 
@@ -62,7 +62,7 @@ class Composer
     {
         $this->parse();
         $packages = [];
-        foreach(array_keys($this->packages) as $package) {
+        foreach (array_keys($this->packages) as $package) {
             $packages[$package] = $package;
         }
         return $packages;
@@ -84,14 +84,17 @@ class Composer
         $config = [];
         $log = [];
         $files = $this->getFilesByKey($key);
-        foreach ($files as $key=>$file) {
+        foreach ($files as $key => $file) {
             if (!in_array($file, $log)) {
                 $log[] = $file;
                 if (File::exists($file)) {
                     include $file;
                     //this file requires a config array
                     //after including once, the config array is available
-                    $fileContentAsArray[$key] = $config[$key];
+
+                    if (!empty($config[$key])) {
+                        $fileContentAsArray[$key] = $config[$key];
+                    }
                 }
             }
         }
@@ -102,5 +105,10 @@ class Composer
     {
         $config = $this->includeFileFromPackageByKeyAndLoadContentIntoArray('config');
         return data_get($config, $key);
+    }
+
+    public function removePackageOwner($key)
+    {
+        return preg_replace('/\w+\//', '', $key);
     }
 }
