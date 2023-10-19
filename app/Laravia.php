@@ -89,6 +89,24 @@ class Laravia
         return collect($array)->sortBy('sort')->toArray();
     }
 
+    public static function getProjectNameFromDomain($url = "")
+    {
+        if (!$url) {
+            $url = request()->getHost();
+        }
+        $urlParts = explode(".", $url);
+
+        if (sizeof($urlParts) == 1) {
+            return $urlParts[0];
+        }
+        if (sizeof($urlParts) == 2) {
+            return $urlParts[0];
+        }
+        if (sizeof($urlParts) > 2) {
+            return $urlParts[1];
+        }
+    }
+
     public static function getDomainNameWithoutSuburl($url = "")
     {
         if (!$url) {
