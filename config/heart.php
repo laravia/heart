@@ -44,8 +44,3 @@ $config['heart']['call'] = [
     'php artisan orchid:install',
     'php artisan orchid:admin admin admin@admin.com password --create',
 ];
-
-$config['heart']['languages'] = [
-    'de' => __('German'),
-    'en' => __('English'),
-];
