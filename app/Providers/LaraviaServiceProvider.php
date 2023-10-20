@@ -3,6 +3,7 @@
 namespace Laravia\Heart\App\Providers;
 
 use App\Orchid\PlatformProvider;
+use Laravia\Heart\App\Classes\Parser;
 use Laravia\Heart\App\Laravia;
 use Laravia\Heart\App\Traits\ServiceProviderTrait;
 use Orchid\Platform\Dashboard;
@@ -70,6 +71,7 @@ class LaraviaServiceProvider extends PlatformProvider
 
         $this->addLaraConfigToLaravelConfig();
         $this->overwriteOrchidSettings();
+        $this->setMacros();
     }
 
     public function addLaraConfigToLaravelConfig(): void
@@ -80,5 +82,15 @@ class LaraviaServiceProvider extends PlatformProvider
     public function overwriteOrchidSettings(): void
     {
         $this->app['config']->set('platform.index', 'laravia.heart');
+    }
+
+    public function setMacros()
+    {
+        \Str::macro('parsedown', function ($text = "", $options = []) {
+            return app(Parser::class)
+                ->setOptions($options)
+                ->setText($text)
+                ->render();
+        });
     }
 }

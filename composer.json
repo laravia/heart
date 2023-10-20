@@ -19,7 +19,8 @@
     "require": {
         "symfony/yaml": "^6.0",
         "spatie/laravel-backup": "*",
-        "orchid/platform":"^14.14"
+        "orchid/platform":"^14.14",
+        "spatie/laravel-markdown":"^2.4"
     },
 
     "require-dev": {

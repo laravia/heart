@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Laravia\Heart\App\Laravia;
 
 $config['heart'] = [
@@ -43,4 +44,16 @@ $config['heart']['call'] = [
     'php artisan vendor:publish --provider="Spatie\Backup\BackupServiceProvider"',
     'php artisan orchid:install',
     'php artisan orchid:admin admin admin@admin.com password --create',
+];
+
+$config['heart']['parsers'] = [
+    ['time:now', Carbon::now()->format(data_get($config, 'core.timeFormat'))],
+    ['datetime:now', Carbon::now()->format(data_get($config, 'core.dateTimeFormat'))],
+    ['date:now', Carbon::now()->format(data_get($config, 'core.dateFormat'))],
+    ['date:yesterday', Carbon::now()->subDay()->format(data_get($config, 'core.dateFormat'))],
+    ['date:tomorrow', Carbon::now()->addDay()->format(data_get($config, 'core.dateFormat'))],
+    ['date:year:now', Carbon::now()->format('Y')],
+    ['date:year:next', Carbon::now()->addYear()->format('Y')],
+    ['icon', '', '', true],
+    ['youtube', '', '', true],
 ];
