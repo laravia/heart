@@ -4,7 +4,7 @@ namespace Laravia\Heart\Tests\Unit;
 
 use Laravia\Heart\App\Classes\TestCase as LaraviaTestCase;
 use Laravia\Heart\App\Laravia;
-use Spatie\Tags\Tag;
+use Orchid\Platform\Models\User;
 
 class LaraviaTest extends LaraviaTestCase
 {
@@ -127,4 +127,27 @@ class LaraviaTest extends LaraviaTestCase
         $this->assertFalse(Laravia::isNewEntry());
     }
 
+    public function testGetArrayWithDistinctFieldDataFromClassByKey()
+    {
+        User::create([
+            'name' => 'test',
+            'email' => 'test1@test.com',
+            'password' => 'test1'
+        ]);
+        User::create([
+            'name' => 'test',
+            'email' => 'test2@test.com',
+            'password' => 'test2'
+        ]);
+        User::create([
+            'name' => 'test2',
+            'email' => 'test3@test.com',
+            'password' => 'test2'
+        ]);
+
+
+        $select = Laravia::getArrayWithDistinctFieldDataFromClassByKey(User::class, 'name');
+        $this->assertIsArray($select);
+        $this->assertEquals(2, sizeof($select));
+    }
 }
