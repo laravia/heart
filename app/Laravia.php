@@ -173,4 +173,9 @@ class Laravia
             return false;
         }
     }
+
+    public static function getArrayWithDistinctFieldDataFromClassByKey(string $class, string $field): array
+    {
+        return $class::select($field)->distinct()->get()->pluck($field, $field)->toArray();
+    }
 }
