@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Laravia\Heart\App\Classes\Embed;
 use Laravia\Heart\App\Laravia;
 
 $config['heart'] = [
@@ -43,7 +44,7 @@ $config['heart']['publish'] = [
 $config['heart']['call'] = [
     'php artisan vendor:publish --provider="Spatie\Backup\BackupServiceProvider"',
     'php artisan orchid:install',
-    'php artisan orchid:admin admin admin@admin.com password --create',
+    'php artisan orchid:admin admin admin@admin.com password',
 ];
 
 $config['heart']['parsers'] = [
@@ -55,5 +56,5 @@ $config['heart']['parsers'] = [
     ['date:year:now', Carbon::now()->format('Y')],
     ['date:year:next', Carbon::now()->addYear()->format('Y')],
     ['icon', '', '', true],
-    ['youtube', '', '', true],
+    ['youtube', '', '', true, Embed::class],
 ];
