@@ -8,7 +8,6 @@ use Laravia\Heart\App\Classes\Composer;
 use Laravia\Heart\App\Classes\Path;
 use Laravia\Heart\App\Models\Model;
 use Orchid\Platform\Models\User;
-use Spatie\Tags\Tag;
 
 class Laravia
 {
@@ -131,9 +130,9 @@ class Laravia
     public static function sendEmail(string $subject, string $body)
     {
         return Mail::html($body, function ($message) use ($subject) {
-            $message->to(Laravia::config('heart.emailRecipient'))
+            $message->to(env('MAIL_DEFAULT_RECIPIENT'))
                 ->subject($subject)
-                ->from(Laravia::config('heart.emailSender'));
+                ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
         });
     }
 
