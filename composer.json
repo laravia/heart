@@ -41,10 +41,6 @@
         }
     },
     "scripts": {
-        "pre-install-cmd": [
-            "@php artisan orchid:install",
-            "@php artisan orchid:admin admin admin@admin.com password"
-        ],
         "post-install-cmd": [
             "@php artisan laravia:call"
         ]
