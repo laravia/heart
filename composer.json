@@ -42,7 +42,9 @@
         }
     },
     "scripts": {
-        "post-root-package-update": []
+        "post-install-cmd": [
+            "@php artisan laravia:call"
+        ]
     },
     "extra": {
         "laravel": {
