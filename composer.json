@@ -19,10 +19,9 @@
     "require": {
         "symfony/yaml": "^6.0",
         "spatie/laravel-backup": "*",
-        "orchid/platform":"^14.14",
-        "spatie/laravel-markdown":"^2.4"
+        "orchid/platform": "^14.14",
+        "spatie/laravel-markdown": "^2.4"
     },
-
     "require-dev": {
         "laravel/sail": "^1.18"
     },
@@ -42,6 +41,10 @@
         }
     },
     "scripts": {
+        "pre-install-cmd": [
+            "@php artisan orchid:install",
+            "@php artisan orchid:admin admin admin@admin.com password"
+        ],
         "post-install-cmd": [
             "@php artisan laravia:call"
         ]

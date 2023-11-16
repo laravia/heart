@@ -42,9 +42,7 @@ $config['heart']['publish'] = [
 ];
 
 $config['heart']['call'] = [
-    'php artisan vendor:publish --provider="Spatie\Backup\BackupServiceProvider"',
-    'php artisan orchid:install',
-    'php artisan orchid:admin admin admin@admin.com password',
+    'php artisan vendor:publish --provider="Spatie\Backup\BackupServiceProvider"'
 ];
 
 $config['heart']['parsers'] = [
