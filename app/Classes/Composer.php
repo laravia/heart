@@ -10,6 +10,7 @@ class Composer
 
     public function parseIntoArray($key, $repository)
     {
+        $package = [];
         $packageFolderPath = base_path('vendor/' . $key);
         if (data_get($repository, 'laravia')) {
             $name = data_get($repository, 'name');
