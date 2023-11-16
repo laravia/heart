@@ -1,4 +1,4 @@
-# larvia - heart - package
+# laravia - heart - package
 Laravia Heart Plugin (the new Larvia Core)
 This package is the new laravia core for all packages.
 > needed orchid/platform
