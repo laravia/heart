@@ -41,6 +41,15 @@ class LaraviaTest extends LaraviaTestCase
         $this->assertEquals($domain, $expects);
     }
 
+    /**
+     * @dataProvider dataProviderUrlsWithoutExtension
+     * */
+    public function testLaraviaFunctionGetProjectNameFromDomain($insert = "", $expects = "")
+    {
+        $domain = Laravia::getProjectNameFromDomain($insert);
+        $this->assertEquals($domain, $expects);
+    }
+
     public static function dataProviderUrls()
     {
         yield 'default suburl www' => [
