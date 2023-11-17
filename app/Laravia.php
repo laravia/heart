@@ -90,19 +90,22 @@ class Laravia
 
     public static function getProjectNameFromDomain($url = "")
     {
-        if (!$url) {
-            $url = request()->getHost();
-        }
-        $urlParts = explode(".", $url);
-
-        if (sizeof($urlParts) == 1) {
-            return $urlParts[0];
-        }
-        if (sizeof($urlParts) == 2) {
-            return $urlParts[0];
-        }
-        if (sizeof($urlParts) > 2) {
-            return $urlParts[1];
+        if (config('app.env') == "local" && !empty(env('APP_LOCAL_PROJECT'))) {
+            return env('APP_LOCAL_PROJECT');
+        } else {
+            if (!$url) {
+                $url = request()->getHost();
+            }
+            $urlParts = explode(".", $url);
+            if (sizeof($urlParts) == 1) {
+                return $urlParts[0];
+            }
+            if (sizeof($urlParts) == 2) {
+                return $urlParts[0];
+            }
+            if (sizeof($urlParts) > 2) {
+                return $urlParts[1];
+            }
         }
     }
 
