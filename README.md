@@ -31,30 +31,23 @@ path = packages/laravia/counter
 url =  git@github.com:laravia/counter.git
 </pre>
 
-## step 1.3 | create folder (only for local development)
-<pre>
-mkdir packages/laravia/counter
-</pre>
-
-## step 1.4 | create and clone your new repository (example: github)
+## step 1.3 | create and clone your new repository (example: github)
 <pre>
 git clone git@github.com:laravia/counter.git packages/laravia/counter
 </pre>
 
-## 1.5 | clone an existing packages (example heart) (only for local development)
+## 1.4 | clone an existing packages (example heart) (only for local development)
 > package, search, replace, destination
 <pre>
 sail art laravia:package:clone packages/laravia/heart heart counter packages/laravia/counter
 </pre>
 
-## 1.6 | update if needed the package composer
+## 1.5 | update if needed the package composer
 <pre>
 nano packages/laravia/counter/composer.json
 </pre>
 
-## 1.7 | run composer
+## 1.6 | run composer
 <pre>
 sail composer update
 </pre>
-
-## 1.8 | happy coding
