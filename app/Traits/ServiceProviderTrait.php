@@ -147,7 +147,7 @@ trait ServiceProviderTrait
                     $cron = data_get($schedule, 1);
                     $localExecutionPermitted = data_get($schedule, 2);
 
-                    if (Laravia::config('app.production') || $localExecutionPermitted) {
+                    if (config('app.env') == "production" || $localExecutionPermitted) {
                         $appSchedule->command($command)->cron($cron);
                     }
                 }
