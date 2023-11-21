@@ -130,10 +130,13 @@ class Laravia
         return "site" . ($uri ? "_" . $uri : '_start');
     }
 
-    public static function sendEmail(string $subject, string $body)
+    public static function sendEmail(string $subject, string $body, string $email = null)
     {
-        return Mail::html($body, function ($message) use ($subject) {
-            $message->to(env('MAIL_DEFAULT_RECIPIENT'))
+        return Mail::html($body, function ($message) use ($subject, $email) {
+            if (!$email) {
+                $email = env('MAIL_DEFAULT_RECIPIENT');
+            }
+            $message->to($email)
                 ->subject($subject)
                 ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
         });
