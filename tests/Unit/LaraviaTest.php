@@ -32,6 +32,12 @@ class LaraviaTest extends LaraviaTestCase
         $this->assertIsArray(Laravia::commands());
     }
 
+
+    public function testGetSchedules()
+    {
+        $this->assertIsArray(Laravia::schedules());
+    }
+
     /**
      * @dataProvider dataProviderUrls
      * */

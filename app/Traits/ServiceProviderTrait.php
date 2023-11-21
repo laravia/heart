@@ -3,6 +3,7 @@
 namespace Laravia\Heart\App\Traits;
 
 use Database\Seeders\DatabaseSeeder;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -35,6 +36,7 @@ trait ServiceProviderTrait
 
         App::booted(function () {
             $this->loadRoutes();
+            $this->loadSchedules();
         });
     }
 
@@ -100,7 +102,7 @@ trait ServiceProviderTrait
     {
         try {
             $this->publishes([
-                Laravia::path()->get($this->name) . "/protected" => protected_path('vendor'),
+                Laravia::path()->get($this->name) . "/protected" => public_path('vendor'),
             ], $this->getPackagePrefix());
         } catch (\Throwable $th) {
             Log::error($th);
@@ -110,8 +112,10 @@ trait ServiceProviderTrait
     protected function loadCommands()
     {
         try {
-            foreach (Laravia::commands() as $command) {
-                $this->commands($command);
+            if ($commands = Laravia::config($this->name . '.commands')) {
+                foreach ($commands as $command) {
+                    $this->commands($command);
+                }
             }
         } catch (\Throwable $th) {
             Log::error($th);
@@ -125,6 +129,27 @@ trait ServiceProviderTrait
             if (File::exists($routesPath) && sizeof(File::allFiles($routesPath))) {
                 foreach (File::allFiles($routesPath) as $route) {
                     $this->loadRoutesFrom($route);
+                }
+            }
+        } catch (\Throwable $th) {
+            Log::error($th);
+        }
+    }
+
+    protected function loadSchedules()
+    {
+        try {
+            $appSchedule = $this->app->make(Schedule::class);
+            if ($schedules = Laravia::config($this->name . '.schedules')) {
+                foreach ($schedules as $schedule) {
+
+                    $command = data_get($schedule, 0);
+                    $cron = data_get($schedule, 1);
+                    $localExecutionPermitted = data_get($schedule, 2);
+
+                    if (Laravia::config('app.production') || $localExecutionPermitted) {
+                        $appSchedule->command($command)->cron($cron);
+                    }
                 }
             }
         } catch (\Throwable $th) {
