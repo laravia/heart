@@ -4,7 +4,7 @@ namespace Laravia\Heart\Tests\Unit;
 
 use Laravia\Heart\App\Classes\TestCase as LaraviaTestCase;
 use Laravia\Heart\App\Laravia;
-use Orchid\Platform\Models\User;
+use Orchid\Attachment\Models\Attachment;
 
 class LaraviaTest extends LaraviaTestCase
 {
@@ -138,25 +138,35 @@ class LaraviaTest extends LaraviaTestCase
 
     public function testGetArrayWithDistinctFieldDataFromClassByKey()
     {
-        User::create([
-            'name' => 'test',
-            'email' => 'test1@test.com',
-            'password' => 'test1'
-        ]);
-        User::create([
-            'name' => 'test',
-            'email' => 'test2@test.com',
-            'password' => 'test2'
-        ]);
-        User::create([
-            'name' => 'test2',
-            'email' => 'test3@test.com',
-            'password' => 'test2'
-        ]);
-
-
-        $select = Laravia::getArrayWithDistinctFieldDataFromClassByKey(User::class, 'name');
+        $attachment[0] = Attachment::create(
+            [
+                'name' => 'test1',
+                'original_name' => 'test1',
+                'mime' => 'test1',
+                'path' => 'test1',
+            ]
+        );
+        $attachment[1] = Attachment::create(
+            [
+                'name' => 'test2',
+                'original_name' => 'test2',
+                'mime' => 'test2',
+                'path' => 'test2',
+            ]
+        );
+        $attachment[2] = Attachment::create(
+            [
+                'name' => 'test3',
+                'original_name' => 'test1',
+                'mime' => 'test3',
+                'path' => 'test3',
+            ]
+        );
+        $select = Laravia::getArrayWithDistinctFieldDataFromClassByKey(Attachment::class, 'original_name');
         $this->assertIsArray($select);
         $this->assertEquals(2, sizeof($select));
+        foreach ($attachment as $attachment) {
+            $attachment->delete();
+        }
     }
 }
