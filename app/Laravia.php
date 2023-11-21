@@ -63,6 +63,11 @@ class Laravia
         return self::getDataFromConfigByKey('commands');
     }
 
+    public static function schedules(): array
+    {
+        return self::getDataFromConfigByKey('schedules');
+    }
+
     public static function dashboardMetrics(): array
     {
         return self::getDataFromConfigByKey('dashboard.metrics');
