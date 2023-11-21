@@ -24,6 +24,61 @@ trait ServiceProviderTrait
             return $this->packageRoot;
         }
     }
+    protected function defaultBootMethod()
+    {
+        $this->loadViews();
+        $this->loadTranslations();
+        $this->loadMigrations();
+        $this->loadSeeders();
+        $this->loadPublishes();
+        $this->loadCommands();
+
+        App::booted(function () {
+            $this->loadRoutes();
+        });
+    }
+
+    protected function loadViews()
+    {
+        try {
+            $this->loadViewsFrom(Laravia::path()->get($this->name) . '/resources/views', $this->getPackagePrefix());
+        } catch (\Throwable $th) {
+            Log::error($th);
+        }
+    }
+
+    protected function loadTranslations()
+    {
+        try {
+            $this->loadTranslationsFrom(Laravia::path()->get($this->name) . '/lang', $this->getPackagePrefix());
+        } catch (\Throwable $th) {
+            Log::error($th);
+        }
+    }
+
+    protected function loadMigrations()
+    {
+        try {
+            $migrationsPath = Laravia::path()->get($this->name) . '/database/migrations';
+            if (File::exists($migrationsPath) && sizeof(File::allFiles($migrationsPath))) {
+                $this->loadMigrationsFrom($migrationsPath);
+            }
+        } catch (\Throwable $th) {
+            Log::error($th);
+        }
+    }
+
+    protected function loadSeeders()
+    {
+        try {
+            $seedersPath = Laravia::path()->get($this->name) . '/database/seeders';
+            if (File::exists($seedersPath) && sizeof(File::allFiles($seedersPath))) {
+                $this->loadSeedsFrom($seedersPath);
+            }
+        } catch (\Throwable $th) {
+            Log::error($th);
+        }
+    }
 
     protected function loadSeedsFrom($path)
     {
@@ -41,65 +96,36 @@ trait ServiceProviderTrait
             }
         });
     }
-
-    protected function defaultBootMethod()
+    protected function loadPublishes()
     {
-
-        try {
-            $this->loadViewsFrom(Laravia::path()->get($this->name) . '/resources/views', $this->getPackagePrefix());
-        } catch (\Throwable $th) {
-            Log::error($th);
-        }
-
-        try {
-            $this->loadTranslationsFrom(Laravia::path()->get($this->name) . '/lang', $this->getPackagePrefix());
-        } catch (\Throwable $th) {
-            Log::error($th);
-        }
-
-        try {
-            $migrationsPath = Laravia::path()->get($this->name) . '/database/migrations';
-            if (File::exists($migrationsPath) && sizeof(File::allFiles($migrationsPath))) {
-                $this->loadMigrationsFrom($migrationsPath);
-            }
-        } catch (\Throwable $th) {
-            Log::error($th);
-        }
-
-        try {
-            $seedersPath = Laravia::path()->get($this->name) . '/database/seeders';
-            if (File::exists($seedersPath) && sizeof(File::allFiles($seedersPath))) {
-                $this->loadSeedsFrom($seedersPath);
-            }
-        } catch (\Throwable $th) {
-            Log::error($th);
-        }
-
-
-        App::booted(function () {
-            try {
-                $routesPath = Laravia::path()->get($this->name) . '/routes';
-                if (File::exists($routesPath) && sizeof(File::allFiles($routesPath))) {
-                    foreach (File::allFiles($routesPath) as $route) {
-                        $this->loadRoutesFrom($route);
-                    }
-                }
-            } catch (\Throwable $th) {
-                Log::error($th);
-            }
-        });
-
         try {
             $this->publishes([
-                Laravia::path()->get($this->name) . "/public" => public_path('vendor'),
+                Laravia::path()->get($this->name) . "/protected" => protected_path('vendor'),
             ], $this->getPackagePrefix());
         } catch (\Throwable $th) {
             Log::error($th);
         }
+    }
 
+    protected function loadCommands()
+    {
         try {
-            foreach (Laravia::commands($this->name) as $command) {
+            foreach (Laravia::commands() as $command) {
                 $this->commands($command);
+            }
+        } catch (\Throwable $th) {
+            Log::error($th);
+        }
+    }
+
+    protected function loadRoutes()
+    {
+        try {
+            $routesPath = Laravia::path()->get($this->name) . '/routes';
+            if (File::exists($routesPath) && sizeof(File::allFiles($routesPath))) {
+                foreach (File::allFiles($routesPath) as $route) {
+                    $this->loadRoutesFrom($route);
+                }
             }
         } catch (\Throwable $th) {
             Log::error($th);
