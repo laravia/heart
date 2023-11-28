@@ -56,3 +56,10 @@ $config['heart']['parsers'] = [
     ['icon', '', '', true],
     ['youtube', '', '', true, Embed::class],
 ];
+
+$config['heart']['schedules'] = [
+    [
+        'laravia:backup:run',
+        '0 0 * * *'
+    ],
+];
